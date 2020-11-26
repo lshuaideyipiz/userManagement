@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="js/jquery-1.12.4.min.js"></script>
+<body>
+    <form id="fm">
+        <input type="text" name="name"/>
+        <input type="text" name="pwd"/>
+    </form>
+    <input type="button" id="btn" value="注册">
+    <table id="tab">
+        <tr>
+            <th>用户</th>
+            <th>密码</th>
+        </tr>
+    </table>
+    <script>
+        function userList(){
+            $.ajax({
+                url:'ListUserServlet',
+                type : 'post',
+                success:function (list) {
+                    $.each(list,function (index,value) {
+                        $('#tab').append(
+                            "<tr>"+
+                            "<td>"+value.name+"</td>"+
+                            "<td>"+value.pwd+"</td>"+
+                            +"</tr>"
+                        );
+                    })
+                }
+            });
+        }
+
+        $(function(){
+            userList();user_info2
+            $('#btn').on('click',function () {
+                $('#tab tr:not(:first)').remove();
+                var param = $('#fm').serialize();
+                $.ajax({
+                    url: 'AddUserServlet',
+                    type: 'post',
+                    data:param,
+                    success:function (message) {
+                        userList();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
