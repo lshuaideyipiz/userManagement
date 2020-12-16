@@ -11,6 +11,9 @@
         <input type="text" name="pwd"/>
     </form>
     <input type="button" id="btn" value="注册">
+
+    <input id="selText" type="text" name="name">
+    <input id="selBtn"  type="button" value="查找">
     <table id="tab">
         <tr>
             <th>用户</th>
@@ -28,15 +31,30 @@
                             "<tr>"+
                             "<td>"+value.name+"</td>"+
                             "<td>"+value.pwd+"</td>"+
+                                "<td><input class='delBtn' name='"+value.name+"' type='button' value='删除'></td>"+
                             +"</tr>"
                         );
                     })
+                    $('.delBtn').on('click',function () {
+                        var param =  $(this).prop('name');
+                        $(this).closest('tr').remove();
+                        $.ajax({
+                            url:'delServlet',
+                            type:'post',
+                            data:{'userName':param},
+                            success:function (message) {
+                                alert(message);
+                                $('#tab tr:not(:first)').remove();
+                                userList();
+                            }
+                        });
+                    });
                 }
             });
         }
 
         $(function(){
-            userList();user_info2
+            userList();
             $('#btn').on('click',function () {
                 $('#tab tr:not(:first)').remove();
                 var param = $('#fm').serialize();
@@ -46,6 +64,24 @@
                     data:param,
                     success:function (message) {
                         userList();
+                    }
+                });
+            });
+            $('#selBtn').on('click',function () {
+                var param = $('#selText').val();
+                $.ajax({
+                    url:"selUserServlet",
+                    type:'post',
+                    data:{'selName':param},
+                    success:function (user) {
+                        $('#tab tr:not(:first)').remove();
+                        $('#tab').append(
+                            "<tr>"+
+                            "<td>"+user.name+"</td>"+
+                            "<td>"+user.pwd+"</td>"+
+                            "<td><input class='delBtn' name='"+user.name+"' type='button' value='删除'></td>"+
+                            +"</tr>"
+                        );
                     }
                 });
             });

@@ -13,4 +13,8 @@ public interface UserDao {
     List<User> listUser();
 
     void addUser(User user);
+
+    void delUserByName(String name);
+
+    User selUserByName(String name);
 }

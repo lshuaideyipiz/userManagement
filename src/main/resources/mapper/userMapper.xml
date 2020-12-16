@@ -13,4 +13,10 @@
     <insert id="addUser" parameterType="user">
         insert into user_info2(name,pwd) values (#{name},#{pwd})
     </insert>
+    <delete id="delUserByName" parameterType="string">
+        delete from user_info2 where name = #{name}
+    </delete>
+    <select id="selUserByName" parameterType="string" resultMap="userMap">
+        select * from user_info2 where name = #{name}
+    </select>
 </mapper>

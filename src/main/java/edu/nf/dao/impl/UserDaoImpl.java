@@ -27,4 +27,24 @@ public class UserDaoImpl implements UserDao {
             throw e;
         }
     }
+
+    @Override
+    public void delUserByName(String name) {
+        try(SqlSession sqlSession = MybatisUtil.getSqlSession(true)) {
+            sqlSession.getMapper(UserDao.class).delUserByName(name);
+        }catch (Exception e){
+            throw e;
+        }
+    }
+
+    @Override
+    public User selUserByName(String name) {
+        try(SqlSession sqlSession = MybatisUtil.getSqlSession(true)) {
+            return sqlSession.getMapper(UserDao.class).selUserByName(name);
+        }catch (Exception e){
+            throw e;
+        }
+    }
+
+
 }
